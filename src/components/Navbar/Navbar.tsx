@@ -11,6 +11,7 @@ const Navbar = () => {
         justifyContent: 'space-between',
         color: 'white',
         padding: '40px',
+        fontSize: '32px',
       }}
     >
       Jokeree

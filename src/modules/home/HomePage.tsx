@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 const HomePage = () => {
   return (
     <Stack alignItems='center'>
-      <JokeCard question='my question' answer='my answer' />
+      <JokeCard />
     </Stack>
   );
 };
