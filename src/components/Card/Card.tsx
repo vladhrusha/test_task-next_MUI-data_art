@@ -1,16 +1,13 @@
 'use client';
 import { Button, CardActions, CardContent, Popover, Stack } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 //
-import { useFetchJoke } from '@/hooks/joke';
+import { useFetchJoke, usePostVote } from '@/hooks/joke';
 
 import Card from '@mui/material/Card';
-
-// type CardProps = {
-//   question: string;
-//   answer: string;
-// };
+import { useMutation, useQuery } from 'react-query';
 
 type Vote = {
   value: number;
@@ -25,38 +22,20 @@ type Joke = {
   availableVotes: string[];
 };
 
-const dummyJoke: Joke = {
-  id: '1',
-  question: 'Why do programmers prefer dark mode',
-  answer: 'Because light attracts bugs',
-  votes: [
-    {
-      value: 10,
-      label: '😂',
-    },
-    {
-      value: 11,
-      label: '👍',
-    },
-
-    {
-      value: 12,
-      label: '❤️',
-    },
-  ],
-  availableVotes: ['😂', '👍', '❤️'],
-};
-
 const JokeCard = () => {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
 
-  const [joke, setJoke] = useState<Joke>(dummyJoke);
+  const { isLoading, error, data: joke, refetch } = useFetchJoke();
 
-  const fetchJoke = () => {
-    console.log('clicked next');
-  };
+  const mutation = useMutation({
+    mutationFn: (label: string) => {
+      return axios.post(`http://localhost:3003/api/joke/${joke.message.id}`, { label });
+    },
+  });
 
-  const postVote = (label: any) => {};
+  if (isLoading) return 'Loading...';
+
+  if (error) return 'An error has occurred: ' + error;
 
   return (
     <Stack>
@@ -72,16 +51,16 @@ const JokeCard = () => {
         }}
       >
         <CardContent component={Stack} rowGap='16px'>
-          <p>Question: {joke.question}</p>
+          <p>Question: {joke.message.question}</p>
           <p>
-            Answer:
+            Answer:{''}
             <span
               style={{
                 filter: showAnswer ? 'none' : 'blur(4px)',
               }}
               onClick={() => setShowAnswer(!showAnswer)}
             >
-              {joke.answer}
+              {joke.message.answer}
             </span>
           </p>
         </CardContent>
@@ -89,12 +68,12 @@ const JokeCard = () => {
         <CardActions>
           <Stack alignItems='center' width='100%'>
             <Stack flexDirection='row' columnGap='16px' justifyContent='center' alignItems='center'>
-              {joke.votes.map((vote, idx) => {
+              {joke.message.votes.map((vote: Vote, idx: number) => {
                 return (
                   <p
                     key={idx}
                     onClick={() => {
-                      postVote(vote.label);
+                      mutation.mutate(vote.label);
                     }}
                   >
                     <span>{vote.value}</span>
@@ -103,7 +82,12 @@ const JokeCard = () => {
                 );
               })}
             </Stack>
-            <Button sx={{ padding: '0', margin: 0, alignSelf: 'end' }} onClick={fetchJoke}>
+            <Button
+              sx={{ padding: '0', margin: 0, alignSelf: 'end' }}
+              onClick={() => {
+                refetch();
+              }}
+            >
               Next
             </Button>
           </Stack>

@@ -1,13 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const useFetchJoke = () => {
-  const [joke, setJoke] = useState();
-  const [jokeError, setJokeError] = useState<any>();
-  const [jokeLoading, setJokeLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    setJokeLoading(true);
-  }, []);
+  return useQuery({
+    queryKey: ['joke'],
+    queryFn: () => fetch('http://localhost:3003/api/joke').then((res) => res.json()),
+  });
 };
 
 export default useFetchJoke;
