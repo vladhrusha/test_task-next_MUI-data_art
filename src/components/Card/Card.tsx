@@ -73,7 +73,7 @@ const JokeCard = () => {
   return (
     <Card
       sx={{
-        minWidth: 440,
+        minWidth: '340px',
         maxWidth: '70%',
         minHeight: '260px',
         display: 'flex',
