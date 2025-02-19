@@ -4,10 +4,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 //
-import { useFetchJoke, usePostVote } from '@/hooks/joke';
+import { useFetchJoke } from '@/hooks/joke';
 
 import Card from '@mui/material/Card';
 import { useMutation, useQuery } from 'react-query';
+
+const baseURL = process.env.BASE_URL;
 
 type Vote = {
   value: number;
@@ -29,7 +31,7 @@ const JokeCard = () => {
 
   const mutation = useMutation({
     mutationFn: (label: string) => {
-      return axios.post(`http://localhost:3003/api/joke/${joke.message.id}`, { label });
+      return axios.post(`${baseURL}/api/joke/${joke.message.id}`, { label });
     },
   });
 

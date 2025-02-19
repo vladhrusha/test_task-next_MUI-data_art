@@ -1,9 +1,11 @@
 import { useQuery } from 'react-query';
 
+const baseURL = process.env.BASE_URL;
+
 const useFetchJoke = () => {
   return useQuery({
     queryKey: ['joke'],
-    queryFn: () => fetch('http://localhost:3003/api/joke').then((res) => res.json()),
+    queryFn: () => fetch(`${baseURL}/api/joke`).then((res) => res.json()),
   });
 };
 
