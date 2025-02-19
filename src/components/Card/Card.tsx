@@ -71,71 +71,70 @@ const JokeCard = () => {
   if (error || !joke) return 'An error has occurred: ' + error;
 
   return (
-    <Stack>
-      <Card
-        sx={{
-          minWidth: 640,
-          minHeight: 250,
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-          width: '50%',
-          justifyContent: 'space-around',
-        }}
-      >
-        <CardContent component={Stack} rowGap='16px'>
-          <p>Question: {joke.question}</p>
-          <p>
-            Answer:{''}
-            <span
-              style={{
-                filter: showAnswer ? 'none' : 'blur(4px)',
-              }}
-              onClick={() => setShowAnswer(!showAnswer)}
-            >
-              {joke.answer}
-            </span>
-          </p>
-        </CardContent>
+    <Card
+      sx={{
+        minWidth: 440,
+        maxWidth: '70%',
+        minHeight: '260px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
 
-        <CardActions>
-          <Stack alignItems='center' width='100%'>
-            <Stack flexDirection='row' columnGap='16px' justifyContent='center' alignItems='center'>
-              {joke.votes.map((vote: Vote, idx: number) => {
-                return (
-                  <Box
-                    component='p'
-                    key={idx}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: '#f0f0f0',
-                        borderRadius: '4px',
-                      },
-                    }}
-                    onClick={() => {
-                      handleMutation(vote.label);
-                      // mutation.mutate(vote.label)
-                    }}
-                  >
-                    <span>{vote.value}</span>
-                    <span>{vote.label}</span>
-                  </Box>
-                );
-              })}
-            </Stack>
-            <Button
-              sx={{ padding: '0', margin: 0, alignSelf: 'end' }}
-              onClick={() => {
-                refetch();
-                setShowAnswer(false);
-              }}
-            >
-              Next
-            </Button>
+        padding: '16px',
+      }}
+    >
+      <CardContent component={Stack} rowGap='16px'>
+        <p>Question: {joke.question}</p>
+        <p>
+          Answer:{''}
+          <span
+            style={{
+              filter: showAnswer ? 'none' : 'blur(4px)',
+            }}
+            onClick={() => setShowAnswer(!showAnswer)}
+          >
+            {joke.answer}
+          </span>
+        </p>
+      </CardContent>
+
+      <CardActions>
+        <Stack alignItems='center' width='100%'>
+          <Stack flexDirection='row' columnGap='16px' justifyContent='center' alignItems='center'>
+            {joke.votes.map((vote: Vote, idx: number) => {
+              return (
+                <Box
+                  component='p'
+                  key={idx}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#f0f0f0',
+                      borderRadius: '4px',
+                    },
+                  }}
+                  onClick={() => {
+                    handleMutation(vote.label);
+                    // mutation.mutate(vote.label)
+                  }}
+                >
+                  <span>{vote.value}</span>
+                  <span>{vote.label}</span>
+                </Box>
+              );
+            })}
           </Stack>
-        </CardActions>
-      </Card>
-    </Stack>
+          <Button
+            sx={{ padding: '0', margin: 0, alignSelf: 'end' }}
+            onClick={() => {
+              refetch();
+              setShowAnswer(false);
+            }}
+          >
+            Next
+          </Button>
+        </Stack>
+      </CardActions>
+    </Card>
   );
 };
 
