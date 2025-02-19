@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { Button, CardActions, CardContent, Popover, Stack } from '@mui/material';
+import { Box, Button, CardActions, CardContent, Popover, Stack } from '@mui/material';
 import Card from '@mui/material/Card';
 
 import axios from 'axios';
@@ -74,8 +74,8 @@ const JokeCard = () => {
     <Stack>
       <Card
         sx={{
-          minWidth: 440,
-          minHeight: 200,
+          minWidth: 640,
+          minHeight: 250,
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
@@ -103,8 +103,15 @@ const JokeCard = () => {
             <Stack flexDirection='row' columnGap='16px' justifyContent='center' alignItems='center'>
               {joke.votes.map((vote: Vote, idx: number) => {
                 return (
-                  <p
+                  <Box
+                    component='p'
                     key={idx}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: '#f0f0f0',
+                        borderRadius: '4px',
+                      },
+                    }}
                     onClick={() => {
                       handleMutation(vote.label);
                       // mutation.mutate(vote.label)
@@ -112,7 +119,7 @@ const JokeCard = () => {
                   >
                     <span>{vote.value}</span>
                     <span>{vote.label}</span>
-                  </p>
+                  </Box>
                 );
               })}
             </Stack>
